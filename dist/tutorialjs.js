@@ -11,7 +11,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _Tutorialjs_instances, _Tutorialjs_options, _Tutorialjs_steps, _Tutorialjs_background, _Tutorialjs_buttonNext, _Tutorialjs_buttonPrevious, _Tutorialjs_comment, _Tutorialjs_nextListener, _Tutorialjs_previousListener, _Tutorialjs_instanciateUtils, _Tutorialjs_displaySteps, _Tutorialjs_end, _Tutorialjs_hexToRgb, _Tutorialjs_position;
 import { DEFAULT_BACKGROUND_COLOR, DEFAULT_BACKGROUND_OPACITY, DEFAULT_NEXT_BUTTON_LABEL, DEFAULT_PREVIOUS_BUTTON_LABEL, DEFAULT_TEXT_COLOR, DEFAULT_TEXT_OPACITY } from './models/options.constant.js';
-import { DEFAULT_COMMENT_POSITION } from './models/step.constant.js';
+import { DEFAULT_COMMENT_FONT_SIZE, DEFAULT_COMMENT_FONT_WEIGHT, DEFAULT_COMMENT_GAP, DEFAULT_COMMENT_POSITION } from './models/step.constant.js';
 export class Tutorialjs {
     constructor(pSteps = [], pOptions = {}) {
         _Tutorialjs_instances.add(this);
@@ -73,6 +73,7 @@ _Tutorialjs_options = new WeakMap(), _Tutorialjs_steps = new WeakMap(), _Tutoria
         ')';
     document.body.appendChild(__classPrivateFieldGet(this, _Tutorialjs_comment, "f"));
 }, _Tutorialjs_displaySteps = function _Tutorialjs_displaySteps(step) {
+    var _a, _b;
     __classPrivateFieldGet(this, _Tutorialjs_buttonNext, "f").removeEventListener('click', __classPrivateFieldGet(this, _Tutorialjs_nextListener, "f"));
     __classPrivateFieldGet(this, _Tutorialjs_buttonPrevious, "f").removeEventListener('click', __classPrivateFieldGet(this, _Tutorialjs_previousListener, "f"));
     const element = (typeof __classPrivateFieldGet(this, _Tutorialjs_steps, "f")[step].element === 'string'
@@ -81,7 +82,9 @@ _Tutorialjs_options = new WeakMap(), _Tutorialjs_steps = new WeakMap(), _Tutoria
     if (element) {
         element.style.zIndex = '9999';
         __classPrivateFieldGet(this, _Tutorialjs_comment, "f").textContent = __classPrivateFieldGet(this, _Tutorialjs_steps, "f")[step].comment;
-        __classPrivateFieldGet(this, _Tutorialjs_instances, "m", _Tutorialjs_position).call(this, element, __classPrivateFieldGet(this, _Tutorialjs_comment, "f"), __classPrivateFieldGet(this, _Tutorialjs_steps, "f")[step].position || DEFAULT_COMMENT_POSITION);
+        __classPrivateFieldGet(this, _Tutorialjs_comment, "f").style.fontWeight = ((_a = __classPrivateFieldGet(this, _Tutorialjs_steps, "f")[step].option) === null || _a === void 0 ? void 0 : _a.fontweight) || DEFAULT_COMMENT_FONT_WEIGHT;
+        __classPrivateFieldGet(this, _Tutorialjs_comment, "f").style.fontSize = ((_b = __classPrivateFieldGet(this, _Tutorialjs_steps, "f")[step].option) === null || _b === void 0 ? void 0 : _b.fontsize) || DEFAULT_COMMENT_FONT_SIZE;
+        __classPrivateFieldGet(this, _Tutorialjs_instances, "m", _Tutorialjs_position).call(this, element, __classPrivateFieldGet(this, _Tutorialjs_comment, "f"), __classPrivateFieldGet(this, _Tutorialjs_steps, "f")[step].option);
         __classPrivateFieldGet(this, _Tutorialjs_buttonNext, "f").addEventListener('click', __classPrivateFieldSet(this, _Tutorialjs_nextListener, () => {
             element.style.zIndex = null;
             if (step + 1 >= __classPrivateFieldGet(this, _Tutorialjs_steps, "f").length) {
@@ -118,21 +121,22 @@ _Tutorialjs_options = new WeakMap(), _Tutorialjs_steps = new WeakMap(), _Tutoria
         b: parseInt(result[3], 16)
     } : null;
 }, _Tutorialjs_position = function _Tutorialjs_position(el, comment, option) {
-    switch (option) {
+    const gap = (option === null || option === void 0 ? void 0 : option.gap) || DEFAULT_COMMENT_GAP;
+    switch ((option === null || option === void 0 ? void 0 : option.position) || DEFAULT_COMMENT_POSITION) {
         case 'top':
-            comment.style.top = (el.offsetTop - comment.offsetHeight - 10) + 'px';
+            comment.style.top = (el.offsetTop - comment.offsetHeight - gap) + 'px';
             comment.style.left = (el.offsetLeft + (el.offsetWidth / 2) - (comment.offsetWidth / 2)) + 'px';
             break;
         case 'left':
             comment.style.top = (el.offsetTop + (el.offsetHeight / 2) - (comment.offsetHeight / 2)) + 'px';
-            comment.style.left = (el.offsetLeft - comment.offsetWidth - 10) + 'px';
+            comment.style.left = (el.offsetLeft - comment.offsetWidth - gap) + 'px';
             break;
         case 'right':
             comment.style.top = (el.offsetTop + (el.offsetHeight / 2) - (comment.offsetHeight / 2)) + 'px';
-            comment.style.left = (el.offsetLeft + el.offsetWidth + 10) + 'px';
+            comment.style.left = (el.offsetLeft + el.offsetWidth + gap) + 'px';
             break;
         default:
-            comment.style.top = (el.offsetTop + el.offsetHeight + 10) + 'px';
+            comment.style.top = (el.offsetTop + el.offsetHeight + gap) + 'px';
             comment.style.left = (el.offsetLeft + (el.offsetWidth / 2) - (comment.offsetWidth / 2)) + 'px';
             break;
     }
