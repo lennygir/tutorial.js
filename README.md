@@ -45,7 +45,14 @@ The steps are an array of objects. Each object represents a step of the tutorial
 export interface Step {
     element: string | HTMLElement;
     comment: string;
-    position?: string; // Default: 'bottom'
+    option?: StepOptions;
+}
+
+export interface StepOptions {
+    position?: 'top' | 'left' | 'right' | 'bottom';     // Default: 'bottom'
+    fontsize?: string;                                  // Default: '15px'
+    fontweight?: string;                                // Default: 'normal'
+    gap?: number;                                       // Default: 10
 }
 ```
 

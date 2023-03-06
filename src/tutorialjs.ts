@@ -1,8 +1,8 @@
 import { Options } from './models/options.model';
-import { Step } from './models/step.model';
+import { Step, StepOptions } from './models/step.model';
 
 import { DEFAULT_BACKGROUND_COLOR, DEFAULT_BACKGROUND_OPACITY, DEFAULT_NEXT_BUTTON_LABEL, DEFAULT_PREVIOUS_BUTTON_LABEL, DEFAULT_TEXT_COLOR, DEFAULT_TEXT_OPACITY } from './models/options.constant';
-import { DEFAULT_COMMENT_POSITION } from './models/step.constant';
+import { DEFAULT_COMMENT_FONT_SIZE, DEFAULT_COMMENT_FONT_WEIGHT, DEFAULT_COMMENT_GAP, DEFAULT_COMMENT_POSITION } from './models/step.constant';
 
 export class Tutorialjs {
 
@@ -88,7 +88,9 @@ export class Tutorialjs {
         if(element) {
             element.style.zIndex = '9999';
             this.#comment.textContent = this.#steps[step].comment;
-            this.#position(element, this.#comment, this.#steps[step].position || DEFAULT_COMMENT_POSITION);
+            this.#comment.style.fontWeight = this.#steps[step].option?.fontweight || DEFAULT_COMMENT_FONT_WEIGHT;
+            this.#comment.style.fontSize = this.#steps[step].option?.fontsize || DEFAULT_COMMENT_FONT_SIZE;
+            this.#position(element, this.#comment, this.#steps[step].option);
 
             this.#buttonNext.addEventListener('click', this.#nextListener = () => {
                 element.style.zIndex = null;
@@ -129,22 +131,23 @@ export class Tutorialjs {
         } : null;
     }
 
-    #position(el: HTMLElement, comment: HTMLElement, option: string): void {
-        switch(option) {
+    #position(el: HTMLElement, comment: HTMLElement, option: StepOptions): void {
+        const gap = option?.gap || DEFAULT_COMMENT_GAP;
+        switch(option?.position || DEFAULT_COMMENT_POSITION) {
             case 'top':
-                comment.style.top = (el.offsetTop - comment.offsetHeight - 10) + 'px';
+                comment.style.top = (el.offsetTop - comment.offsetHeight - gap) + 'px';
                 comment.style.left = (el.offsetLeft + (el.offsetWidth / 2) - (comment.offsetWidth / 2)) + 'px';
                 break;
             case 'left':
                 comment.style.top = (el.offsetTop + (el.offsetHeight / 2) - (comment.offsetHeight / 2)) + 'px';
-                comment.style.left = (el.offsetLeft - comment.offsetWidth - 10) + 'px';
+                comment.style.left = (el.offsetLeft - comment.offsetWidth - gap) + 'px';
                 break;
             case 'right':
                 comment.style.top = (el.offsetTop + (el.offsetHeight / 2) - (comment.offsetHeight / 2)) + 'px';
-                comment.style.left = (el.offsetLeft + el.offsetWidth + 10) + 'px';
+                comment.style.left = (el.offsetLeft + el.offsetWidth + gap) + 'px';
                 break;
             default: // Bottom and unrecognized values
-                comment.style.top = (el.offsetTop + el.offsetHeight + 10) + 'px';
+                comment.style.top = (el.offsetTop + el.offsetHeight + gap) + 'px';
                 comment.style.left = (el.offsetLeft + (el.offsetWidth / 2) - (comment.offsetWidth / 2)) + 'px';
                 break;
         }
