@@ -6,7 +6,7 @@ Library to easily create tutorials for your web application.
 
 ![Example of usage](./assets/demo/example.png)
 
-You can find a demo in this repository: [demo](./demo).
+You can find a code demo and a live demo here: [code demo](./demo) [live demo](https://tutorial-js.github.io/).
 
 Please note that you have to build the library before running the demo and run the demo HTML file from a web server. (If you are using VSCode, you can use the [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension.)
 
